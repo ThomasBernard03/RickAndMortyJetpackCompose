@@ -11,6 +11,7 @@ import fr.thomasbernard03.rickandmorty.domain.models.Resource
 import fr.thomasbernard03.rickandmorty.domain.usecases.GetCharacterListUseCase
 import fr.thomasbernard03.rickandmorty.domain.usecases.SynchronizeCharactersUseCase
 import fr.thomasbernard03.rickandmorty.domain.usecases.SynchronizeEpisodesUseCase
+import fr.thomasbernard03.rickandmorty.domain.usecases.SynchronizeLocationsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,6 +22,7 @@ import org.koin.java.KoinJavaComponent.get
 class CharactersViewModel(
     private val getCharacterListUseCase: GetCharacterListUseCase = get(GetCharacterListUseCase::class.java),
     private val synchronizeEpisodesUseCase: SynchronizeEpisodesUseCase = get(SynchronizeEpisodesUseCase::class.java),
+    private val synchronizeLocationsUseCase : SynchronizeLocationsUseCase = get(SynchronizeLocationsUseCase::class.java),
     private val navigationHelper: NavigationHelper = get(NavigationHelper::class.java),
     private val errorHelper: ErrorHelper = get(ErrorHelper::class.java),
     private val resourcesHelper: ResourcesHelper = get(ResourcesHelper::class.java),
@@ -51,13 +53,26 @@ class CharactersViewModel(
 
             when(val result = synchronizeEpisodesUseCase()){
                 is Resource.Success -> {
-                    _uiState.update { it.copy(loadingMessage = resourcesHelper.getString(R.string.loading_characters)) }
-                    loadCharacters()
+                    _uiState.update { it.copy(loadingMessage = resourcesHelper.getString(R.string.loading_locations)) }
+                    loadLocations()
                 }
                 is Resource.Error -> {
                     errorHelper.showError(result.message)
                     _uiState.update { it.copy(loading = false) }
                 }
+            }
+        }
+    }
+
+    private suspend fun loadLocations(){
+        when(val result = synchronizeLocationsUseCase()){
+            is Resource.Success -> {
+                _uiState.update { it.copy(loadingMessage = resourcesHelper.getString(R.string.loading_characters)) }
+                loadCharacters()
+            }
+            is Resource.Error -> {
+                errorHelper.showError(result.message)
+                _uiState.update { it.copy(loading = false) }
             }
         }
     }

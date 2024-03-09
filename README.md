@@ -10,11 +10,11 @@
 
 #### MainActivity
 
-La couche présentation contient toutes les features de l'application (login, main etc...). À la racine du package **presentation** on peut voir MainActivity. Nous utilisons une application en Single Activity. Nous auront donc une seule et unique Activité. Dans cette activité nous déclarons notre Scaffold et notre seul NavHost. C'est donc au sein de ce Scaffold que la navigation sera effectuée.
+La couche présentation contient toutes les features de l'application (login, main etc...). À la racine du package **presentation** on peut voir [MainActivity](./app/src/main/java/fr/thomasbernard03/rickandmorty/presentation/MainActivity.kt). Nous utilisons une application en Single Activity. Nous auront donc une seule et unique Activité. Dans cette activité nous déclarons notre Scaffold et notre seul NavHost. C'est donc au sein de ce Scaffold que la navigation sera effectuée.
 
 Dans cette Activity nous injectons notre `navigator : Navigator`, cette instance de Navigator va nous permettre d'écouter toutes les navigations effectuée dans l'application et les répercuter sur notre navController. Cette classe nous permet d'effectuer la navigation directement depuis nos ViewModels.
 
-Nous injectons aussi notre `errorHelper: ErrorHelper`. Tout comme pour le navigator, nous nous abonnons à cette instance pour pouvoir afficher les messages d'erreur en utilisant le snackbarHostState de notre Scaffold. Nous avons créé ce ErrorHelper pour éviter de passer des callback dans chaqu'un de nos screens pour afficher des messages d'erreurs.
+Nous injectons aussi notre `errorHelper: ErrorHelper`. Tout comme pour le navigator, nous nous abonnons à cette instance pour pouvoir afficher les messages d'erreur en utilisant le snackbarHostState de notre Scaffold. Nous avons créé ce ErrorHelper pour éviter de passer des callback dans chacun de nos screens pour afficher des messages d'erreurs.
 
 
 ### Screen
@@ -75,7 +75,7 @@ La couche domain est séparée en 3 packages principaux :
 
 ### Models
 
-Les models sont des classes contenant les données prêtes pour l'affichage.
+Les models sont des classes contenant les données prêtes pour l'affichage. Elle ne doivent pas contenir d'annotations dépendantes de la couche data. 
 
 
 ### Repositories
@@ -85,7 +85,7 @@ Ce packages contient uniquement les interfaces de nos Repositories (Couche Data)
 
 ### UseCases
 
-Les UseCases contiennent les cas d'utilisation de notre application, c'est notre logique métier. Dans nos usecases nous injections nos repoisoties (Leurs interfaces). Ces UsesCases doivent surcharger l'opérateur invoke. Ils contiennent donc une seule méthode publique.
+Les UseCases contiennent les cas d'utilisation de notre application, c'est notre logique métier. Dans nos usecases nous injections nos repositories (Leurs interfaces). Ces UsesCases doivent surcharger l'opérateur invoke. Ils contiennent donc une seule méthode publique.
 
 ```kotlin
 class LoginUserUseCase(){
@@ -101,3 +101,8 @@ val loginResult = loginUseCase(username, password)
 ```
 
 La plupart des usecases retournent un Type Resource. Cela permet de gérer facilement les erreurs dans nos ViewModels et d'afficher des messages d'erreurs parlant pour l'utilisateur. Les uses cases ne lèvent donc pas d'exception. Ils doivent catcher ces dernières.
+
+
+## Couche data
+
+La couche data 

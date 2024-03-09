@@ -31,7 +31,21 @@ data class CharacterDtoDown(
 
     @SerializedName("url")
     val url : String,
-)
+
+    @SerializedName("origin")
+    val origin : Location?,
+
+    @SerializedName("location")
+    val location : Location?,
+){
+    data class Location(
+        @SerializedName("name")
+        val name: String,
+
+        @SerializedName("url")
+        val url: String,
+    )
+}
 
 //{
 //    "id": 1,

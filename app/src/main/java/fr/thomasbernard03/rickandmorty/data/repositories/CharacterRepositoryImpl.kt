@@ -3,8 +3,12 @@ package fr.thomasbernard03.rickandmorty.data.repositories
 import fr.thomasbernard03.rickandmorty.commons.helpers.PreferencesHelper
 import fr.thomasbernard03.rickandmorty.data.local.dao.CharacterDao
 import fr.thomasbernard03.rickandmorty.data.local.dao.CharacterEpisodeDao
+import fr.thomasbernard03.rickandmorty.data.local.dao.CharacterLocationDao
+import fr.thomasbernard03.rickandmorty.data.local.dao.CharacterOriginDao
 import fr.thomasbernard03.rickandmorty.data.local.entities.CharacterEntity
 import fr.thomasbernard03.rickandmorty.data.local.entities.CharacterEpisodeEntity
+import fr.thomasbernard03.rickandmorty.data.local.entities.CharacterLocationEntity
+import fr.thomasbernard03.rickandmorty.data.local.entities.CharacterOriginEntity
 import fr.thomasbernard03.rickandmorty.data.remote.ApiService
 import fr.thomasbernard03.rickandmorty.domain.models.CharacterListModel
 import fr.thomasbernard03.rickandmorty.domain.models.CharacterModel
@@ -15,6 +19,8 @@ class CharacterRepositoryImpl(
     private val apiService: ApiService = get(ApiService::class.java),
     private val characterDao: CharacterDao = get(CharacterDao::class.java),
     private val characterEpisodeDao: CharacterEpisodeDao = get(CharacterEpisodeDao::class.java),
+    private val characterLocationDao: CharacterLocationDao = get(CharacterLocationDao::class.java),
+    private val characterOriginDao: CharacterOriginDao = get(CharacterOriginDao::class.java),
     private val preferencesHelper: PreferencesHelper = get(PreferencesHelper::class.java),
 ) : CharacterRepository {
 
@@ -59,8 +65,23 @@ class CharacterRepositoryImpl(
                     
                     characterEpisodeDao.insertCharacterEpisode(characterEpisode)
                 }
-            }
 
+                characterDto.location?.url?.substringAfterLast("/")?.toLongOrNull()?.let {  locationId ->
+                    val characterLocation = CharacterLocationEntity(
+                        characterId = characterDto.id,
+                        locationId = locationId
+                    )
+                    characterLocationDao.insertCharacterLocation(characterLocation)
+                }
+
+                characterDto.origin?.url?.substringAfterLast("/")?.toLongOrNull()?.let { locationId ->
+                    val characterOrigin = CharacterOriginEntity(
+                        characterId = characterDto.id,
+                        locationId = locationId
+                    )
+                    characterOriginDao.insertCharacterOrigin(characterOrigin)
+                }
+            }
         }
 
         preferencesHelper.charactersSynchronizationDone = true

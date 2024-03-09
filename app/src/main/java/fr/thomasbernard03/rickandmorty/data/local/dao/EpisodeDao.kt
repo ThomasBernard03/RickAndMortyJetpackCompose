@@ -17,11 +17,6 @@ interface EpisodeDao {
     @Query("SELECT * FROM CharacterEntity WHERE id IN (SELECT characterId FROM CharacterEpisodeEntity WHERE episodeId = :episodeId)")
     suspend fun getCharactersForEpisode(episodeId: Long): List<CharacterEntity>
 
-
-    @Query("SELECT * FROM episodeentity WHERE url = :url")
-    suspend fun getEpisodeFromUrl(url : String): EpisodeEntity?
-
-
     @Insert
     suspend fun insert(episodesEntity: List<EpisodeEntity>)
 

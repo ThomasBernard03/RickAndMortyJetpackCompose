@@ -10,6 +10,9 @@
     <string name="loading_episodes">Chargement des épisodes</string>
     <string name="episodes">Épisodes</string>
 
+    <!-- Locations -->
+    <string name="loading_locations">Chargement des lieux</string>
+
 
     <!-- Status -->
     <string name="status_alive">Vivant</string>

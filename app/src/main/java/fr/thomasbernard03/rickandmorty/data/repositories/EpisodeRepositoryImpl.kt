@@ -6,6 +6,7 @@ import fr.thomasbernard03.rickandmorty.data.local.dao.EpisodeDao
 import fr.thomasbernard03.rickandmorty.data.local.entities.CharacterEpisodeEntity
 import fr.thomasbernard03.rickandmorty.data.local.entities.EpisodeEntity
 import fr.thomasbernard03.rickandmorty.data.remote.ApiService
+import fr.thomasbernard03.rickandmorty.domain.models.EpisodeListModel
 import fr.thomasbernard03.rickandmorty.domain.models.EpisodeModel
 import fr.thomasbernard03.rickandmorty.domain.repositories.CharacterRepository
 import fr.thomasbernard03.rickandmorty.domain.repositories.EpisodeRepository
@@ -57,6 +58,19 @@ class EpisodeRepositoryImpl(
                 airDate = episode.airDate,
                 episode = episode.episode,
                 characters = characters.map { EpisodeModel.CharacterModel(id = it.id, name = it.name, image = it.image) }
+            )
+        }
+    }
+
+    override suspend fun getEpisodeList(): List<EpisodeListModel> {
+        val episodeEntity = episodeDao.getEpisodeList()
+
+        return episodeEntity.map { episode ->
+            EpisodeListModel(
+                id = episode.id,
+                name = episode.name,
+                airDate = episode.airDate,
+                episode = episode.episode,
             )
         }
     }

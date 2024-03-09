@@ -12,6 +12,7 @@
 
     <!-- Locations -->
     <string name="loading_locations">Chargement des lieux</string>
+    <string name="locations">Lieux</string>
 
 
     <!-- Status -->

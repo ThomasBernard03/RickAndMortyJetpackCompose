@@ -10,6 +10,9 @@ import fr.thomasbernard03.rickandmorty.data.local.entities.EpisodeEntity
 @Dao
 interface EpisodeDao {
 
+    @Query("SELECT * FROM EpisodeEntity")
+    suspend fun getEpisodeList(): List<EpisodeEntity>
+
     @Query("SELECT * FROM EpisodeEntity WHERE id IN (SELECT episodeId FROM CharacterEpisodeEntity WHERE characterId = :characterId)")
     suspend fun getEpisodesForCharacter(characterId: Long): List<EpisodeEntity>
 

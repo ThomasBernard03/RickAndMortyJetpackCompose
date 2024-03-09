@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">RickAndMorty</string>
+
+    <!-- Characters -->
+    <string name="characters">Personnages</string>
+    <string name="loading_characters">Chargement des personnages</string>
+
+    <!-- Episodes -->
+    <string name="loading_episodes">Chargement des épisodes</string>
+    <string name="episodes">Épisodes</string>
+
+
+    <!-- Status -->
+    <string name="status_alive">Vivant</string>
+    <string name="status_dead">Mort</string>
+    <string name="status_unknown">Inconnu</string>
+
+
+    <!-- Gender -->
+    <string name="gender_male">Homme</string>
+    <string name="gender_female">Femme</string>
+    <string name="gender_unknown">Inconnu</string>
+    <string name="gender_genderless">Sans genre</string>
+
+
+    <!-- Errors -->
+    <string name="error_occured">Une erreur est survenue</string>
+    <string name="error_network">Erreur réseau, vérifier votre connexion internet puis réessayez</string>
+    <string name="error_character_not_found">Le personnage est introuvable</string>
+    <string name="error_occured_code">Une erreur est survenue (code %1$d)</string>
+</resources>

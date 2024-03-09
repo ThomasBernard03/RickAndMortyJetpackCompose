@@ -1,9 +1,12 @@
 package fr.thomasbernard03.rickandmorty.presentation.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -19,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,12 +31,14 @@ import fr.thomasbernard03.rickandmorty.commons.extensions.toPrettyDate
 import fr.thomasbernard03.rickandmorty.presentation.theme.Dark100
 import java.util.Date
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun EpisodeItem(
     modifier : Modifier = Modifier,
     episode : String,
     name : String,
     airDate : Date,
+    expanded : Boolean = true,
     charactersImage : List<String> = emptyList(),
     onClick : () -> Unit = { }
 ) {
@@ -49,7 +55,7 @@ fun EpisodeItem(
             modifier = Modifier
                 .weight(1f)
                 .padding(8.dp),
-            verticalArrangement = Arrangement.Top
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
                 text = "$episode - $name",
@@ -60,18 +66,38 @@ fun EpisodeItem(
                 text = airDate.toPrettyDate(),
                 style = MaterialTheme.typography.titleSmall)
 
-            LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                items(charactersImage){
-                    AsyncImage(
-                        model = it,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(Color.Transparent, shape = CircleShape)
-                    )
+            AnimatedVisibility(visible = expanded) {
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    charactersImage.forEach {
+                        AsyncImage(
+                            model = it,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                        )
+                    }
                 }
+            }
+
+            AnimatedVisibility(visible = !expanded) {
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    items(charactersImage){
+                        AsyncImage(
+                            model = it,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(40.dp)
+                                .clip(CircleShape)
+                        )
+                    }
+                }
+
             }
         }
     }

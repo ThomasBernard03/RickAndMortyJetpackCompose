@@ -4,6 +4,7 @@
     <!-- Characters -->
     <string name="characters">Personnages</string>
     <string name="loading_characters">Chargement des personnages</string>
+    <string name="search_character">Recherchez un personnage</string>
 
     <!-- Episodes -->
     <string name="loading_episodes">Chargement des épisodes</string>

@@ -7,4 +7,6 @@ data class CharactersUiState(
     val loadingMessage : String = "",
 
     val characters : List<CharacterListModel> = emptyList(),
+
+    val query : String = ""
 )

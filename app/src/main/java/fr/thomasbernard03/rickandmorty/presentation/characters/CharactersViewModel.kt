@@ -38,6 +38,10 @@ class CharactersViewModel(
             is CharactersEvent.OnCharacterSelected -> {
                 navigationHelper.navigateTo(NavigationHelper.Destination.Character(event.character.id, event.character.name))
             }
+
+            is CharactersEvent.OnQueryChanged -> {
+                _uiState.update { it.copy(query = event.query) }
+            }
         }
     }
 

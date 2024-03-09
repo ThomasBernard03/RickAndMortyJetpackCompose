@@ -9,6 +9,7 @@
     <!-- Episodes -->
     <string name="loading_episodes">Chargement des épisodes</string>
     <string name="episodes">Épisodes</string>
+    <string name="season_number">Saison n°</string>
 
     <!-- Locations -->
     <string name="loading_locations">Chargement des lieux</string>

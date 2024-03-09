@@ -70,9 +70,9 @@ class MainActivity(
                 val bottomBarItems by remember {
                     mutableStateOf(
                         listOf(
-                            BottomBarItem(label = R.string.characters, icon = R.drawable.search, route = "characters"),
-                            BottomBarItem(label = R.string.episodes, icon = R.drawable.search, route = "episodes"),
-                            BottomBarItem(label = R.string.locations, icon = R.drawable.search, route = "locations"),
+                            BottomBarItem(label = R.string.characters, icon = R.drawable.character, route = "characters"),
+                            BottomBarItem(label = R.string.episodes, icon = R.drawable.episode, route = "episodes"),
+                            BottomBarItem(label = R.string.locations, icon = R.drawable.location, route = "locations"),
                         )
                     )
                 }

@@ -21,7 +21,7 @@ import fr.thomasbernard03.rickandmorty.domain.repositories.LocationRepository
 import fr.thomasbernard03.rickandmorty.domain.usecases.GetCharacterEpisodesUseCase
 import fr.thomasbernard03.rickandmorty.domain.usecases.GetCharacterListUseCase
 import fr.thomasbernard03.rickandmorty.domain.usecases.GetCharacterUseCase
-import fr.thomasbernard03.rickandmorty.domain.usecases.GetEpisodeListUseCase
+import fr.thomasbernard03.rickandmorty.domain.usecases.GetGroupedEpisodeListUseCase
 import fr.thomasbernard03.rickandmorty.domain.usecases.SynchronizeCharactersUseCase
 import fr.thomasbernard03.rickandmorty.domain.usecases.SynchronizeEpisodesUseCase
 import fr.thomasbernard03.rickandmorty.domain.usecases.SynchronizeLocationsUseCase
@@ -54,7 +54,7 @@ class ApplicationController : Application() {
         single { SynchronizeEpisodesUseCase() }
         single { SynchronizeCharactersUseCase() }
         single { SynchronizeLocationsUseCase() }
-        single { GetEpisodeListUseCase() }
+        single { GetGroupedEpisodeListUseCase() }
 
         // Repositories
         single<CharacterRepository> { CharacterRepositoryImpl() }

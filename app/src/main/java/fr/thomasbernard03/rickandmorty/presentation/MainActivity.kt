@@ -3,6 +3,7 @@ package fr.thomasbernard03.rickandmorty.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
@@ -23,27 +24,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import fr.thomasbernard03.composents.NavigationBar
-import fr.thomasbernard03.composents.animations.animatedComposable
 import fr.thomasbernard03.rickandmorty.R
+import fr.thomasbernard03.rickandmorty.commons.extensions.getSubtitle
+import fr.thomasbernard03.rickandmorty.commons.extensions.getTitle
 import fr.thomasbernard03.rickandmorty.commons.helpers.ErrorHelper
 import fr.thomasbernard03.rickandmorty.commons.helpers.NavigationHelper
 import fr.thomasbernard03.rickandmorty.commons.helpers.ResourcesHelper
 import fr.thomasbernard03.rickandmorty.domain.models.BottomBarItem
-import fr.thomasbernard03.rickandmorty.presentation.character.CharacterScreen
-import fr.thomasbernard03.rickandmorty.presentation.character.CharacterViewModel
-import fr.thomasbernard03.rickandmorty.presentation.characters.CharactersScreen
-import fr.thomasbernard03.rickandmorty.presentation.characters.CharactersViewModel
-import fr.thomasbernard03.rickandmorty.presentation.episodes.EpisodesScreen
-import fr.thomasbernard03.rickandmorty.presentation.episodes.EpisodesViewModel
+import fr.thomasbernard03.rickandmorty.presentation.navigation.navigationGraph
 import fr.thomasbernard03.rickandmorty.presentation.theme.RickAndMortyTheme
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -63,8 +55,8 @@ class MainActivity(
                 val snackbarHostState = remember { SnackbarHostState() }
                 val scope = rememberCoroutineScope()
 
-                var title by remember { mutableStateOf("") }
-                var subtitle by remember { mutableStateOf("") }
+                val title = navController.currentBackStackEntry?.getTitle() ?: ""
+                val subtitle = navController.currentBackStackEntry?.getSubtitle() ?: ""
                 val showBackButton = navController.currentBackStackEntryAsState().value?.destination?.route?.contains("/") ?: false
 
                 val bottomBarItems by remember {
@@ -87,17 +79,22 @@ class MainActivity(
                         )
                     },
                     bottomBar = {
-                        BottomAppBar {
+                        BottomAppBar(
+                        ) {
                             bottomBarItems.forEach {
+                                val selected = navController.currentBackStackEntryAsState().value?.destination?.route == it.route
                                 NavigationBarItem(
-                                    selected = false,
+                                    selected = selected,
                                     icon = {
                                         Icon(painter = painterResource(id = it.icon), contentDescription = stringResource(id = it.label))
                                     },
                                     label = {
                                         Text(text = stringResource(id = it.label))
                                     },
-                                    onClick = { navController.navigate(it.route) }
+                                    onClick = {
+                                        if (!selected)
+                                            navController.navigate(it.route)
+                                    }
                                 )
                             }
                         }
@@ -145,50 +142,7 @@ class MainActivity(
                         color = MaterialTheme.colorScheme.background
                     ) {
                         NavHost(navController = navController, startDestination = "characters"){
-                            animatedComposable(route = "characters"){
-                                title = stringResource(id = R.string.characters)
-                                subtitle = ""
-                                val viewModel : CharactersViewModel = viewModel()
-                                val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-                                CharactersScreen(uiState = uiState, onEvent = viewModel::onEvent)
-                            }
-
-                            animatedComposable(
-                                route = "characters/{id}?name={name}",
-                                arguments = listOf(
-                                    navArgument("id"){
-                                        type = NavType.LongType
-                                        defaultValue = 1L
-                                    },
-                                    navArgument("name"){
-                                        type = NavType.StringType
-                                        defaultValue = ""
-                                    }
-                                )
-                            ){ backStackEntry->
-                                val id = backStackEntry.arguments?.getLong("id") ?: 1L
-                                val name = backStackEntry.arguments?.getString("name") ?: ""
-
-                                subtitle = name
-
-                                val viewModel : CharacterViewModel = viewModel()
-                                val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-                                CharacterScreen(id = id, uiState = uiState, onEvent = viewModel::onEvent)
-                            }
-
-
-                            animatedComposable(route = "episodes"){
-                                title = stringResource(id = R.string.episodes)
-                                subtitle = ""
-
-                                val viewModel : EpisodesViewModel = viewModel()
-                                val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-                                EpisodesScreen(uiState = uiState, onEvent = viewModel::onEvent)
-                            }
-                            animatedComposable(route = "locations"){
-                                title = stringResource(id = R.string.locations)
-                                subtitle = ""
-                            }
+                            navigationGraph()
                         }
                     }
                 }

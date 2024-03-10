@@ -3,3 +3,4 @@
 app/release/**
 app/build/**
 .DS_Store
+Keystore

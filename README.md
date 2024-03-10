@@ -1,5 +1,18 @@
 
-# Rick And Morty Jetpack Compose
+<h1 align="center">Rick And Morty Jetpack Compose</h1>
+
+
+<p align="center">
+<img src="Documentation/Images/Resume.png"/>
+</p>
+
+<p align="center">
+  <img alt="API" src="https://img.shields.io/badge/language-kotlin-purple"/>
+    <img alt="API" src="https://img.shields.io/badge/UI%20framework-Jetpack%20Compose-blue"/> 
+       <img alt="API" src="https://img.shields.io/badge/plateform-Android-green"/> 
+
+  
+</p>
 
 ## Architecture générale
 

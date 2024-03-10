@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -20,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
@@ -76,10 +79,17 @@ class MainActivity(
                     },
                     bottomBar = {
                         BottomAppBar(
+                            containerColor = MaterialTheme.colorScheme.primary,
                         ) {
                             bottomBarItems.forEach {
                                 val selected = navController.currentBackStackEntryAsState().value?.destination?.route == it.route
                                 NavigationBarItem(
+                                    colors = NavigationBarItemDefaults.colors(
+                                        unselectedIconColor = Color.White,
+                                        selectedTextColor = Color.White,
+                                        indicatorColor = Color.White,
+                                        selectedIconColor = MaterialTheme.colorScheme.primary
+                                    ),
                                     selected = selected,
                                     alwaysShowLabel = false,
                                     icon = {
@@ -89,8 +99,14 @@ class MainActivity(
                                         Text(text = stringResource(id = it.label))
                                     },
                                     onClick = {
-                                        if (!selected)
-                                            navController.navigate(it.route)
+                                        if (!selected){
+                                            navController.navigate(it.route){
+                                                popUpTo(navController.graph.id){
+                                                    inclusive = true
+                                                }
+                                                launchSingleTop = true
+                                            }
+                                        }
                                     }
                                 )
                             }

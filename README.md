@@ -12,6 +12,16 @@
        <img alt="API" src="https://img.shields.io/badge/plateform-Android-green"/> 
 </p>
 
+## Technologies
+
+- Room pour la base de données (Dao, Entity, Embedded)
+- Retrofit2 pour les requètes HTTP (Interceptors)
+- Koin pour l'injection de dépendances
+- Android navigation avec NavHost
+- Coroutines
+- Preferences
+- LazyList, Async Images
+
 ## Architecture générale
 
 ### Couche présentation

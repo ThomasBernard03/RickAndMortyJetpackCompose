@@ -72,6 +72,8 @@ dependencies {
     // Koin for dependency injection
     implementation(libs.koin.android)
     implementation(libs.koin.core)
+
+    // Coil for async images
     implementation(libs.coil)
 
     // Navigation and lifecycle

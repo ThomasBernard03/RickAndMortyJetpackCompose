@@ -10,16 +10,11 @@
   <img alt="API" src="https://img.shields.io/badge/language-kotlin-purple"/>
     <img alt="API" src="https://img.shields.io/badge/UI%20framework-Jetpack%20Compose-blue"/> 
        <img alt="API" src="https://img.shields.io/badge/plateform-Android-green"/> 
-
-  
 </p>
 
 ## Architecture générale
 
-
-
 ### Couche présentation
-
 
 #### MainActivity
 
@@ -118,4 +113,60 @@ La plupart des usecases retournent un Type Resource. Cela permet de gérer facil
 
 ## Couche data
 
-La couche data 
+La couche data contient 3 packages. 
+
+### Repositories
+
+Ce package contient l'implémentation des repositories de notre couche domain. Ces repositories sont suffixés de Impl. Dans ces repositories nous injectons nos DAO et notre ApiService. Chaque méthode dans un repoistories peut lever des Exceptions.
+
+### Local
+
+Le package local contient toutes nos sources de données locales. 
+
+#### DAO
+
+Les DAO (Data Access Object) sont des méthodes d'accès à nos données locales. Avec Room, ces classes doivent être annontés de `@Dao`. Toutes les méthodes dans un DAO doivent être suspend pour ne pas bloquer l'interface utilisateur. Exemple de DAO [CharacterDao](./app/src/main/java/fr/thomasbernard03/rickandmorty/data/local/dao/CharacterDao.kt) :
+```kotlin
+@Dao
+interface CharacterDao {
+    @Query("SELECT * FROM characterentity WHERE id = :id")
+    suspend fun getCharacter(id: Long): CharacterEntity
+}
+```
+
+#### Entities
+
+Les Entities représentent notre modèle de base de données. Elles possèdent toutes les annotations nécéssaires du Framework pour par exemple créer des index et des clés primaires. Exemple d'entité [CharacterEntity](./app/src/main/java/fr/thomasbernard03/rickandmorty/data/local/entities/CharacterEntity.kt)
+
+```kotlin
+@Entity
+data class CharacterEntity(
+    @PrimaryKey
+    val id: Long,
+    val name: String,
+    val status: Status,
+    val species: String,
+    val type: String,
+    val image: String,
+    val gender: Gender,
+    val url : String,
+)
+```
+
+### Commons
+
+La couche commons contient toutes les méthodes utilisables à travers toutes les couches de notre application.
+
+#### Extensions
+
+Le package extensions contient toutes les méthodes d'extensions. Exemple de méthode d'extensions [DateExtension](./app/src/main/java/fr/thomasbernard03/rickandmorty/commons/extensions/DateExtensions.kt) : 
+```kotlin
+fun Date.toPrettyDate() : String {
+    val dateFormatter = SimpleDateFormat("dd/MM/yyyy", Locale.FRENCH)
+    return dateFormatter.format(this)
+}
+```
+
+#### Helpers
+
+Les helpers sont des classes permettant de faciliter certaines opérations, comme par exemple récupérer une traduction, afficher une snackbar, réaliser une navigation. [Helpers](./app/src/main/java/fr/thomasbernard03/rickandmorty/commons/helpers/). Tous ces helpers doivent avoir une interface et une implémentation.

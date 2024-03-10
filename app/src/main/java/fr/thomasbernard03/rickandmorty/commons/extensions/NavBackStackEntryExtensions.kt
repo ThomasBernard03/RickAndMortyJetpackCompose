@@ -1,7 +1,6 @@
 package fr.thomasbernard03.rickandmorty.commons.extensions
 
 import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavDestination
 import fr.thomasbernard03.rickandmorty.R
 import fr.thomasbernard03.rickandmorty.commons.helpers.ResourcesHelper
 import org.koin.java.KoinJavaComponent.get

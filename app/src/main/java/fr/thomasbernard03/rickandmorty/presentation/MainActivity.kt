@@ -3,7 +3,6 @@ package fr.thomasbernard03.rickandmorty.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
@@ -20,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,7 +31,6 @@ import fr.thomasbernard03.rickandmorty.commons.extensions.getSubtitle
 import fr.thomasbernard03.rickandmorty.commons.extensions.getTitle
 import fr.thomasbernard03.rickandmorty.commons.helpers.ErrorHelper
 import fr.thomasbernard03.rickandmorty.commons.helpers.NavigationHelper
-import fr.thomasbernard03.rickandmorty.commons.helpers.ResourcesHelper
 import fr.thomasbernard03.rickandmorty.domain.models.BottomBarItem
 import fr.thomasbernard03.rickandmorty.presentation.navigation.navigationGraph
 import fr.thomasbernard03.rickandmorty.presentation.theme.RickAndMortyTheme
@@ -44,8 +41,7 @@ import org.koin.java.KoinJavaComponent.get
 
 class MainActivity(
     private val navigationHelper: NavigationHelper = get(NavigationHelper::class.java),
-    private val errorHelper: ErrorHelper = get(ErrorHelper::class.java),
-    private val resourcesHelper: ResourcesHelper = get(ResourcesHelper::class.java)
+    private val errorHelper: ErrorHelper = get(ErrorHelper::class.java)
 ) : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +81,7 @@ class MainActivity(
                                 val selected = navController.currentBackStackEntryAsState().value?.destination?.route == it.route
                                 NavigationBarItem(
                                     selected = selected,
+                                    alwaysShowLabel = false,
                                     icon = {
                                         Icon(painter = painterResource(id = it.icon), contentDescription = stringResource(id = it.label))
                                     },
@@ -120,8 +117,6 @@ class MainActivity(
                                 }
                             }
                         }.launchIn(this)
-
-
                     }
 
                     LaunchedEffect(Unit){
